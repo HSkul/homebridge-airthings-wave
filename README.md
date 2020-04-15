@@ -1,8 +1,9 @@
-# homebridge-bme280
+# homebridge-airthings-wave
 
-[Bosch BME280](https://www.bosch-sensortec.com/bst/products/all_products/bme280)
-temperature/humidity/barometric pressure sensor service plugin for [Homebridge](https://github.com/nfarina/homebridge).
+[Airthings Wave](https://www.airthings.com/)
+temperature/humidity/radon sensor service plugin for [Homebridge](https://github.com/nfarina/homebridge).
 
+Ignore below
 [![NPM Downloads](https://img.shields.io/npm/dm/homebridge-bme280.svg?style=flat)](https://npmjs.org/package/homebridge-bme280)
 
 * Display of temperature, humidity and Barometric Pressure from a BME280 connected to a RaspberryPI.
