@@ -39,7 +39,7 @@ class AirthingsPlugin {
 //    if (this.spreadsheetId) {
 //      this.log_event_counter = 59;
 //      this.logger = new logger(this.spreadsheetId);
-    }
+//    }
 /*  Shouldn't need any of this:
 
     this.init = false;
