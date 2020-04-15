@@ -29,7 +29,6 @@
   },
   "homepage": "https://github.com/HSkul/homebridge-airthings-wave#readme",
   "dependencies": {
-    "moment": "^2.18.1",
   }
 }
  
