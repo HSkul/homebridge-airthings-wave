@@ -27,7 +27,7 @@ module.exports = (homebridge) => {
 
 class AirthingsPlugin {
   constructor(log, config) {
-//    this.log = log;
+    this.log = log;
     this.name = config.name;
     this.name_temperature = config.name_temperature || this.name;
     this.name_humidity = config.name_humidity || this.name;
