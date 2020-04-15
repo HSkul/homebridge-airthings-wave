@@ -32,7 +32,7 @@ class AirthingsPlugin {
     this.name_temperature = config.name_temperature || this.name;
     this.name_humidity = config.name_humidity || this.name;
     this.refresh = config['refresh'] || 3600; // Update every hour
-    this.address = config.address
+    this.address = config.address;
 
 //    this.options = config.options || {};
 //    this.spreadsheetId = config['spreadsheetId'];
