@@ -5,15 +5,15 @@
 //var logger = require("mcuiot-logger").logger;
 //const moment = require('moment');
 
-const airthings_date = 1;
-const airthings_humidity = 2;
-const airthings_temperature = 3;
+//const airthings_date = 1;
+const airthings_humidity = 1;
+const airthings_temperature = 2;
 
-var os = require("os");
-var hostname = os.hostname();
+//var os = require("os");
+//var hostname = os.hostname();
 
 let Service, Characteristic;
-var CustomCharacteristic;
+//var CustomCharacteristic;
 //var FakeGatoHistoryService;
 
 module.exports = (homebridge) => {
