@@ -1,38 +1,46 @@
 'use strict';
 
-const bme280_sensor = require('bme280-sensor');
-var debug = require('debug')('BME280');
-var logger = require("mcuiot-logger").logger;
-const moment = require('moment');
+//const bme280_sensor = require('bme280-sensor');
+//var debug = require('debug')('BME280');
+//var logger = require("mcuiot-logger").logger;
+//const moment = require('moment');
+
+const airthings_date = 1;
+const airthings_humidity = 2;
+const airthings_temperature = 3;
+
 var os = require("os");
 var hostname = os.hostname();
 
 let Service, Characteristic;
 var CustomCharacteristic;
-var FakeGatoHistoryService;
+//var FakeGatoHistoryService;
 
 module.exports = (homebridge) => {
   Service = homebridge.hap.Service;
   Characteristic = homebridge.hap.Characteristic;
-  CustomCharacteristic = require('./lib/CustomCharacteristic.js')(homebridge);
-  FakeGatoHistoryService = require('fakegato-history')(homebridge);
+//  CustomCharacteristic = require('./lib/CustomCharacteristic.js')(homebridge);
+//  FakeGatoHistoryService = require('fakegato-history')(homebridge);
 
-  homebridge.registerAccessory('homebridge-bme280', 'BME280', BME280Plugin);
+  homebridge.registerAccessory('homebridge-airthings', 'Airthings', AirthingsPlugin);
 };
 
-class BME280Plugin {
+class AirthingsPlugin {
   constructor(log, config) {
-    this.log = log;
+//    this.log = log;
     this.name = config.name;
     this.name_temperature = config.name_temperature || this.name;
     this.name_humidity = config.name_humidity || this.name;
-    this.refresh = config['refresh'] || 60; // Update every minute
-    this.options = config.options || {};
-    this.spreadsheetId = config['spreadsheetId'];
-    if (this.spreadsheetId) {
-      this.log_event_counter = 59;
-      this.logger = new logger(this.spreadsheetId);
+    this.refresh = config['refresh'] || 3600; // Update every hour
+    this.address = config.address
+
+//    this.options = config.options || {};
+//    this.spreadsheetId = config['spreadsheetId'];
+//    if (this.spreadsheetId) {
+//      this.log_event_counter = 59;
+//      this.logger = new logger(this.spreadsheetId);
     }
+/*  Shouldn't need any of this:
 
     this.init = false;
     this.data = {};
@@ -55,18 +63,17 @@ class BME280Plugin {
         this.devicePolling.bind(this);
       })
       .catch(err => this.log(`BME280 initialization failed: ${err} `));
-
+*/
 
     this.informationService = new Service.AccessoryInformation();
-
     this.informationService
-      .setCharacteristic(Characteristic.Manufacturer, "Bosch")
-      .setCharacteristic(Characteristic.Model, "RPI-BME280")
-      .setCharacteristic(Characteristic.SerialNumber, hostname + "-" + hostname)
-      .setCharacteristic(Characteristic.FirmwareRevision, require('./package.json').version);
+      .setCharacteristic(Characteristic.Manufacturer, "Airthings")
+      .setCharacteristic(Characteristic.Model, "Airthings Wave")
+      .setCharacteristic(Characteristic.SerialNumber, "123-456-789");
+//      .setCharacteristic(Characteristic.FirmwareRevision, require('./package.json').version);
 
+    this.humidityService = new Service.HumiditySensor(this.name_humidity);
     this.temperatureService = new Service.TemperatureSensor(this.name_temperature);
-
     this.temperatureService
       .getCharacteristic(Characteristic.CurrentTemperature)
       .setProps({
@@ -75,26 +82,34 @@ class BME280Plugin {
       });
     //        .on('get', this.getCurrentTemperature.bind(this));
 
-    this.temperatureService
-      .addCharacteristic(CustomCharacteristic.AtmosphericPressureLevel);
-
-    this.humidityService = new Service.HumiditySensor(this.name_humidity);
+//    this.temperatureService
+//      .addCharacteristic(CustomCharacteristic.AtmosphericPressureLevel);
 
     setInterval(this.devicePolling.bind(this), this.refresh * 1000);
 
-    this.temperatureService.log = this.log;
-    this.loggingService = new FakeGatoHistoryService("weather", this.temperatureService);
+//    this.temperatureService.log = this.log;
+//    this.loggingService = new FakeGatoHistoryService("weather", this.temperatureService);
 
   }
 
   devicePolling() {
-    debug("Polling BME280");
-    if (this.sensor) {
-      this.sensor.readSensorData()
-        .then(data => {
-          this.log(`data(temp) = ${JSON.stringify(data, null, 2)}`);
+//    debug("Polling BME280");
+//    if (this.sensor) {
+    var spawn = require("child_process").spawn;
+    var pythonProcess = spawn('python',"/home/pi/quary_wave.py", this.address);
+// We are getting all three values together so we need to split them up
+    pythonProcess.stdout.on('data', (data) => {
+      const values = data.split(' ');
+//      this.humidity = values[airthings_humidity]
+//      this.temperature = values[airthings_temperature]
 
-          this.loggingService.addEntry({
+
+// Her we need to get data from the Airthings and store it
+//      this.sensor.readSensorData()
+//        .then(data => {
+//          this.log(`data(temp) = ${JSON.stringify(data, null, 2)}`);
+
+ /*         this.loggingService.addEntry({
             time: moment().unix(),
             temp: roundInt(data.temperature_C),
             pressure: roundInt(data.pressure_hPa),
@@ -108,32 +123,33 @@ class BME280Plugin {
               this.log_event_counter = 0;
             }
           }
-          this.temperatureService
-            .setCharacteristic(Characteristic.CurrentTemperature, roundInt(data.temperature_C));
-          this.temperatureService
-            .setCharacteristic(CustomCharacteristic.AtmosphericPressureLevel, roundInt(data.pressure_hPa));
-          this.humidityService
-            .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(data.humidity));
+*/
+      this.temperatureService
+        .setCharacteristic(Characteristic.CurrentTemperature, values[airthings_temperature]);
+//      this.temperatureService
+//        .setCharacteristic(CustomCharacteristic.AtmosphericPressureLevel, roundInt(data.pressure_hPa));
+      this.humidityService
+        .setCharacteristic(Characteristic.CurrentRelativeHumidity, values[airthings_humidity]);
 
-        })
-        .catch(err => {
-          this.log(`BME read error: ${err}`);
-          debug(err.stack);
-          if (this.spreadsheetId) {
-            this.logger.storeBME(this.name, 1, -999, -999, -999);
-          }
+      });
+//        .catch(err => {
+//          this.log(`BME read error: ${err}`);
+//          debug(err.stack);
+//          if (this.spreadsheetId) {
+//            this.logger.storeBME(this.name, 1, -999, -999, -999);
+//          }
 
-        });
-    } else {
-      this.log("Error: BME280 Not Initalized");
-    }
+//        });
+//    } else {
+//      this.log("Error: BME280 Not Initalized");
+//    }
   }
 
   getServices() {
-    return [this.informationService, this.temperatureService, this.humidityService, this.loggingService]
+    return [this.informationService, this.temperatureService, this.humidityService] //, this.loggingService]
   }
 }
 
-function roundInt(string) {
-  return Math.round(parseFloat(string) * 10) / 10;
-}
+//function roundInt(string) {
+//  return Math.round(parseFloat(string) * 10) / 10;
+//}
