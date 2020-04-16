@@ -125,11 +125,11 @@ class AirthingsPlugin {
           }
 */
       this.temperatureService
-        .setCharacteristic(Characteristic.CurrentTemperature, values[airthings_temperature]);
+        .setCharacteristic(Characteristic.CurrentTemperature, roundInt(values[airthings_temperature]));
 //      this.temperatureService
 //        .setCharacteristic(CustomCharacteristic.AtmosphericPressureLevel, roundInt(data.pressure_hPa));
       this.humidityService
-        .setCharacteristic(Characteristic.CurrentRelativeHumidity, values[airthings_humidity]);
+        .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(values[airthings_humidity]));
 
       });
 //        .catch(err => {
