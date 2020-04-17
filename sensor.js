@@ -22,7 +22,7 @@ module.exports = (homebridge) => {
 //  CustomCharacteristic = require('./lib/CustomCharacteristic.js')(homebridge);
 //  FakeGatoHistoryService = require('fakegato-history')(homebridge);
 
-  homebridge.registerAccessory('homebridge-airthings', 'Airthings', AirthingsPlugin);
+  homebridge.registerAccessory('homebridge-airthings-wave', 'Airthings', AirthingsPlugin);
 };
 
 class AirthingsPlugin {
@@ -31,7 +31,7 @@ class AirthingsPlugin {
     this.name = config.name;
     this.name_temperature = config.name_temperature || this.name;
     this.name_humidity = config.name_humidity || this.name;
-    this.refresh = config['refresh'] || 3600; // Update every hour
+    this.refresh = config['refresh'] || 60; // Update every minute
     this.address = config.address;
 
 //    this.options = config.options || {};
