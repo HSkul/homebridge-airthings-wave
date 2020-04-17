@@ -1,7 +1,7 @@
 'use strict';
 
 //const bme280_sensor = require('bme280-sensor');
-//var debug = require('debug')('BME280');
+var debug = require('debug'); //('BME280');
 //var logger = require("mcuiot-logger").logger;
 //const moment = require('moment');
 
@@ -93,13 +93,14 @@ class AirthingsPlugin {
   }
 
   devicePolling() {
-//    debug("Polling BME280");
+    debug("Calling Python Script with output:");
 //    if (this.sensor) {
     var spawn = require("child_process").spawn;
     var pythonProcess = spawn('python',"/home/pi/quary_wave.py", this.address);
 // We are getting all three values together so we need to split them up
     pythonProcess.stdout.on('data', (data) => {
       const values = data.split(' ');
+      debug(data);
 //      this.humidity = values[airthings_humidity]
 //      this.temperature = values[airthings_temperature]
 
@@ -130,7 +131,7 @@ class AirthingsPlugin {
 //        .setCharacteristic(CustomCharacteristic.AtmosphericPressureLevel, roundInt(data.pressure_hPa));
       this.humidityService
         .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(values[airthings_humidity]));
-
+      debug("Done with updating values");
       });
 //        .catch(err => {
 //          this.log(`BME read error: ${err}`);
