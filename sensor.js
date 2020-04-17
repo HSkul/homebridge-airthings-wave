@@ -98,7 +98,7 @@ class AirthingsPlugin {
     var spawn = require("child_process").spawn;
     var pythonProcess = spawn('python',["/home/pi/quary_wave.py", this.address]);
 // We are getting all three values together so we need to split them up
-    pythonProcess.stdout.on('data', (data) => {
+    pythonProcess.stdout.on('data', function(data) => {
       //resolve(data.toString());
       const strvalues = data.toString();
       const values = strvalues.split(' ');
