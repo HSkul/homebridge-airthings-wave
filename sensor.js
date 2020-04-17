@@ -99,9 +99,10 @@ class AirthingsPlugin {
     var pythonProcess = spawn('python',["/home/pi/quary_wave.py", this.address]);
 // We are getting all three values together so we need to split them up
     pythonProcess.stdout.on('data', (data) => {
-      resolve(data.toString());
-      const values = data.split(' ');
-      debug(data);
+      //resolve(data.toString());
+      const strvalues = data.toString();
+      const values = strvalues.split(' ');
+      debug(values);
 //      this.humidity = values[airthings_humidity]
 //      this.temperature = values[airthings_temperature]
 
