@@ -95,13 +95,17 @@ class AirthingsPlugin {
   devicePolling() {
     debug("Calling Python Script with output:");
 //    if (this.sensor) {
+    var strvalues
     var spawn = require("child_process").spawn;
     var pythonProcess = spawn('python',['/home/pi/quary_wave.py', this.address]);
 // We are getting all three values together so we need to split them up
     pythonProcess.stdout.on('data', function(data) {
-      const strvalues = data.toString();
-      const values = strvalues.split(' ');
+      strvalues += data.toString();
+    });
+    py.stdout.on('end', function(){
+      var values = strvalues.split(' ');
       debug(values);
+      
 //      this.humidity = values[airthings_humidity]
 //      this.temperature = values[airthings_temperature]
 
