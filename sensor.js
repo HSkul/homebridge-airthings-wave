@@ -68,8 +68,8 @@ class AirthingsPlugin {
     this.informationService
       .setCharacteristic(Characteristic.Manufacturer, "Airthings")
       .setCharacteristic(Characteristic.Model, "Airthings Wave")
-      .setCharacteristic(Characteristic.SerialNumber, "123-456-789");
-//      .setCharacteristic(Characteristic.FirmwareRevision, require('./package.json').version);
+      .setCharacteristic(Characteristic.SerialNumber, "123-456-789")
+      .setCharacteristic(Characteristic.FirmwareRevision, require('./package.json').version);
 
     this.humidityService = new Service.HumiditySensor(this.name_humidity);
     this.temperatureService = new Service.TemperatureSensor(this.name_temperature);
@@ -137,16 +137,16 @@ class AirthingsPlugin {
           }
 */
       console.log('Humidity value');
-      console.log(roundInt(Number(valuest[airthings_humidity])));
+      console.log(roundInt(valuest[airthings_humidity]));
       console.log('Temperature value');
-      console.log(roundInt(Number(valuest[airthings_temperature])));
+      console.log(roundInt(valuest[airthings_temperature]));
       
       this.temperatureService
-        .setCharacteristic(Characteristic.CurrentTemperature, roundInt(Number(valuest[airthings_temperature])));
+        .setCharacteristic(Characteristic.CurrentTemperature, roundInt(valuest[airthings_temperature]));
 //      this.temperatureService
 //        .setCharacteristic(CustomCharacteristic.AtmosphericPressureLevel, roundInt(data.pressure_hPa));
       this.humidityService
-        .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(Number(valuest[airthings_humidity])));
+        .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(valuest[airthings_humidity]));
       console.log('Done with updating values');
       });
 //        .catch(err => {
