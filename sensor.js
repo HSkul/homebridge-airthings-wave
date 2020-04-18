@@ -96,6 +96,7 @@ class AirthingsPlugin {
 //    debug("Calling Python Script with output:");
 //    this.log("Calling Python Script for Airthings");
 //    if (this.sensor) {
+    console.log('getting to the python call');
     var strvalues = ''
     var spawn = require("child_process").spawn;
     var pythonProcess = spawn('python',['/home/pi/quary_wave.py', this.address]);
@@ -104,6 +105,7 @@ class AirthingsPlugin {
       strvalues = toString().data;
 //    });
 //    pythonProcess.stdout.on('end', function(){
+      console.log(strvalues);
       var valuest = strvalues.split(' ');
 //      debug(strvalues);
       
