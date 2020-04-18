@@ -93,21 +93,19 @@ class AirthingsPlugin {
   }
 
   devicePolling() {
-    debug("Calling Python Script with output:");
-    this.log("Calling Python Script for Airthings");
+//    debug("Calling Python Script with output:");
+//    this.log("Calling Python Script for Airthings");
 //    if (this.sensor) {
     var strvalues = ''
     var spawn = require("child_process").spawn;
     var pythonProcess = spawn('python',['/home/pi/quary_wave.py', this.address]);
 // We are getting all three values together so we need to split them up
     pythonProcess.stdout.on('data', function(data) {
-      strvalues += data;
-    });
-    pythonProcess.stdout.on('end', function(){
+      strvalues = data;
+//    });
+//    pythonProcess.stdout.on('end', function(){
       var valuest = strvalues.split(' ');
-      this.log("Got back");
-      this.log(strvalues);
-      debug(strvalues);
+//      debug(strvalues);
       
 //      this.humidity = values[airthings_humidity]
 //      this.temperature = values[airthings_temperature]
@@ -134,11 +132,11 @@ class AirthingsPlugin {
           }
 */
       this.temperatureService
-        .setCharacteristic(Characteristic.CurrentTemperature, roundInt(Number(valuest[airthings_temperature])));
+        .setCharacteristic(Characteristic.CurrentTemperature, Number(valuest[airthings_temperature]));
 //      this.temperatureService
 //        .setCharacteristic(CustomCharacteristic.AtmosphericPressureLevel, roundInt(data.pressure_hPa));
       this.humidityService
-        .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(Number(valuest[airthings_humidity])));
+        .setCharacteristic(Characteristic.CurrentRelativeHumidity, Number(valuest[airthings_humidity]));
       debug("Done with updating values");
       });
 //        .catch(err => {
@@ -147,7 +145,7 @@ class AirthingsPlugin {
 //          if (this.spreadsheetId) {
 //            this.logger.storeBME(this.name, 1, -999, -999, -999);
 //          }
-
+//
 //        });
 //    } else {
 //      this.log("Error: BME280 Not Initalized");
