@@ -104,7 +104,9 @@ class AirthingsPlugin {
     var pythonProcess = spawn('python',['/home/pi/quary_wave.py', this.address]);
 // We are getting all three values together so we need to split them up
     pythonProcess.stdout.on('data', function(data) {
-      strvalues = toString().data;
+      strvalues = data.toString('utf8');
+//      console.log('Here is data');
+//      console.log(data);
 //    });
 //    pythonProcess.stdout.on('end', function(){
       console.log(strvalues);
