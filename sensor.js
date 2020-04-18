@@ -137,9 +137,9 @@ class AirthingsPlugin {
           }
 */
       console.log('Humidity value');
-      console.log(valuest[airthings_humidity]);
+      console.log(roundInt(Number(valuest[airthings_humidity])));
       console.log('Temperature value');
-      console.log(valuest[airthings_temperature]);
+      console.log(roundInt(Number(valuest[airthings_temperature])));
       
       this.temperatureService
         .setCharacteristic(Characteristic.CurrentTemperature, roundInt(Number(valuest[airthings_temperature])));
