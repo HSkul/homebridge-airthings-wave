@@ -59,9 +59,8 @@ class AirthingsPlugin {
       .then(result => {
         this.log(`BME280 initialization succeeded`);
         this.init = true;
-*/
     this.devicePolling.bind(this);
-/*      })
+    })
       .catch(err => this.log(`BME280 initialization failed: ${err} `));
 */
 
