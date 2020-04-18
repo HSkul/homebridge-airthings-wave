@@ -97,6 +97,8 @@ class AirthingsPlugin {
 //    this.log("Calling Python Script for Airthings");
 //    if (this.sensor) {
     console.log('getting to the python call');
+    console.log('Blue tooth address');
+    console.log(this.address);
     var strvalues = ''
     var spawn = require("child_process").spawn;
     var pythonProcess = spawn('python',['/home/pi/quary_wave.py', this.address]);
