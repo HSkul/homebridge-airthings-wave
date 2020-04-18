@@ -136,12 +136,14 @@ class AirthingsPlugin {
             }
           }
 */
+      console.log('Temperature value');
+      console.log(valuest[airthings_temperature]);
       this.temperatureService
-        .setCharacteristic(Characteristic.CurrentTemperature, Number(valuest[airthings_temperature]));
+        .setCharacteristic(Characteristic.CurrentTemperature, roundInt(Number(valuest[airthings_temperature])));
 //      this.temperatureService
 //        .setCharacteristic(CustomCharacteristic.AtmosphericPressureLevel, roundInt(data.pressure_hPa));
       this.humidityService
-        .setCharacteristic(Characteristic.CurrentRelativeHumidity, Number(valuest[airthings_humidity]));
+        .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(Number(valuest[airthings_humidity])));
       debug("Done with updating values");
       });
 //        .catch(err => {
@@ -162,6 +164,6 @@ class AirthingsPlugin {
   }
 }
 
-//function roundInt(string) {
-//  return Math.round(parseFloat(string) * 10) / 10;
-//}
+function roundInt(string) {
+  return Math.round(parseFloat(string) * 10) / 10;
+}
