@@ -109,8 +109,8 @@ class AirthingsPlugin {
 //    });
 //    pythonProcess.stdout.on('end', function(){
       console.log(strvalues);
-      var valuest = strvalues.split(' ');
-//      debug(strvalues);
+      const valuest = strvalues.split(' ');
+      console.log(valuest);
       
 //      this.humidity = values[airthings_humidity]
 //      this.temperature = values[airthings_temperature]
@@ -144,7 +144,7 @@ class AirthingsPlugin {
 //        .setCharacteristic(CustomCharacteristic.AtmosphericPressureLevel, roundInt(data.pressure_hPa));
       this.humidityService
         .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(Number(valuest[airthings_humidity])));
-      debug("Done with updating values");
+      console.log('Done with updating values');
       });
 //        .catch(err => {
 //          this.log(`BME read error: ${err}`);
