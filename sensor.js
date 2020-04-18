@@ -95,16 +95,16 @@ class AirthingsPlugin {
   devicePolling() {
     debug("Calling Python Script with output:");
 //    if (this.sensor) {
-    var strvalues
+    var strvalues = ''
     var spawn = require("child_process").spawn;
     var pythonProcess = spawn('python',['/home/pi/quary_wave.py', this.address]);
 // We are getting all three values together so we need to split them up
     pythonProcess.stdout.on('data', function(data) {
-      strvalues += data.toString();
+      strvalues += data;
     });
     pythonProcess.stdout.on('end', function(){
-      var values = strvalues.split(' ');
-      debug(values);
+      var valuest = strvalues.split(' ');
+      debug(valuest);
       
 //      this.humidity = values[airthings_humidity]
 //      this.temperature = values[airthings_temperature]
@@ -131,11 +131,11 @@ class AirthingsPlugin {
           }
 */
       this.temperatureService
-        .setCharacteristic(Characteristic.CurrentTemperature, roundInt(values[airthings_temperature]));
+        .setCharacteristic(Characteristic.CurrentTemperature, roundInt(valuest[airthings_temperature]));
 //      this.temperatureService
 //        .setCharacteristic(CustomCharacteristic.AtmosphericPressureLevel, roundInt(data.pressure_hPa));
       this.humidityService
-        .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(values[airthings_humidity]));
+        .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(valuest[airthings_humidity]));
       debug("Done with updating values");
       });
 //        .catch(err => {
