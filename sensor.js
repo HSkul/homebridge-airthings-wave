@@ -1,7 +1,7 @@
 'use strict';
 
 //const bme280_sensor = require('bme280-sensor');
-//var debug = require('debug'); //('BME280');
+var debug = require('debug'); //('BME280');
 //var logger = require("mcuiot-logger").logger;
 //const moment = require('moment');
 
@@ -93,7 +93,8 @@ class AirthingsPlugin {
   }
 
   devicePolling() {
-//    debug("Calling Python Script with output:");
+    debug("Calling Python Script with output:");
+    this.log("Calling Python Script for Airthings");
 //    if (this.sensor) {
     var strvalues = ''
     var spawn = require("child_process").spawn;
@@ -104,7 +105,9 @@ class AirthingsPlugin {
     });
     pythonProcess.stdout.on('end', function(){
       var valuest = strvalues.split(' ');
-//      debug(valuest);
+      this.log("Got back");
+      this.log(strvalues);
+      debug(strvalues);
       
 //      this.humidity = values[airthings_humidity]
 //      this.temperature = values[airthings_temperature]
@@ -135,7 +138,7 @@ class AirthingsPlugin {
 //      this.temperatureService
 //        .setCharacteristic(CustomCharacteristic.AtmosphericPressureLevel, roundInt(data.pressure_hPa));
       this.humidityService
-        .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(valuest[airthings_humidity]));
+        .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(Number(valuest[airthings_humidity])));
       debug("Done with updating values");
       });
 //        .catch(err => {
