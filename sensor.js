@@ -6,8 +6,8 @@ var debug = require('debug'); //('BME280');
 //const moment = require('moment');
 
 //const airthings_date = 1;
-const airthings_humidity = 1;
-const airthings_temperature = 2;
+const airthings_humidity = 0;
+const airthings_temperature = 1;
 
 //var os = require("os");
 //var hostname = os.hostname();
