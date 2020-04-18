@@ -102,7 +102,7 @@ class AirthingsPlugin {
     pythonProcess.stdout.on('data', function(data) {
       strvalues += data.toString();
     });
-    py.stdout.on('end', function(){
+    pythonProcess.stdout.on('end', function(){
       var values = strvalues.split(' ');
       debug(values);
       
