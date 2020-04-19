@@ -99,20 +99,22 @@ class AirthingsPlugin {
 //    this.log("Calling Python Script for Airthings");
 //    if (this.sensor) {
     console.log('getting to the python call');
-    console.log('Blue tooth address');
+    console.log('Blue tooth address ', this.address);
     console.log(this.address);
     
+    var strvalues
+    var valuest
     var spawn = require("child_process").spawn;
     var pythonProcess = spawn('python',['/home/pi/quary_wave.py', this.address]);
 // We are getting all three values together so we need to split them up
     pythonProcess.stdout.on('data', function(data) {
-      var strvalues = data.toString('utf8');
+      strvalues = data.toString('utf8');
       console.log('Here is data');
       console.log(strvalues);
     });
 //    pythonProcess.stdout.on('end', function(){
 //      console.log(strvalues);
-    var valuest = strvalues.split(' ');
+    valuest = strvalues.split(' ');
 //      console.log(this.valuest);
       
 //      this.humidity = values[airthings_humidity]
@@ -140,9 +142,9 @@ class AirthingsPlugin {
           }
 */
     console.log('Humidity value');
-    console.log(roundInt(this.valuest[airthings_humidity]));
+    console.log(roundInt(valuest[airthings_humidity]));
     console.log('Temperature value');
-    console.log(roundInt(this.valuest[airthings_temperature]));
+    console.log(roundInt(valuest[airthings_temperature]));
     console.log('this should be the bt address again');
     console.log(this.address);
       
