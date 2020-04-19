@@ -60,12 +60,12 @@ class AirthingsPlugin {
       this.sensor.init()
       .then(result => {
         this.log(`BME280 initialization succeeded`);
-        this.init = true;
+        this.init = true;  */
     this.devicePolling.bind(this);
-    })
+/*    })
       .catch(err => this.log(`BME280 initialization failed: ${err} `));
 */
-
+    console.log('defining services');
     this.informationService = new Service.AccessoryInformation();
     this.informationService
       .setCharacteristic(Characteristic.Manufacturer, "Airthings")
@@ -82,7 +82,7 @@ class AirthingsPlugin {
         maxValue: 100
       });
     //        .on('get', this.getCurrentTemperature.bind(this));
-
+    console.log('defining services complete');
 //    this.temperatureService
 //      .addCharacteristic(CustomCharacteristic.AtmosphericPressureLevel);
 
@@ -91,6 +91,7 @@ class AirthingsPlugin {
     this.temperatureService.log = this.log;
 //    this.loggingService = new FakeGatoHistoryService("weather", this.temperatureService);
     this.init = true;
+    console.log('init should be true');
   }
 
   devicePolling() {
