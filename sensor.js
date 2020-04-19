@@ -88,7 +88,7 @@ class AirthingsPlugin {
 
     setInterval(this.devicePolling.bind(this), this.refresh * 1000);
 
-//    this.temperatureService.log = this.log;
+    this.temperatureService.log = this.log;
 //    this.loggingService = new FakeGatoHistoryService("weather", this.temperatureService);
 
   }
@@ -106,8 +106,8 @@ class AirthingsPlugin {
 // We are getting all three values together so we need to split them up
     pythonProcess.stdout.on('data', function(data) {
       this.strvalues = data.toString('utf8');
-//      console.log('Here is data');
-//      console.log(data);
+      console.log('Here is data');
+      console.log(data);
 //    });
 //    pythonProcess.stdout.on('end', function(){
 //      console.log(strvalues);
@@ -143,12 +143,12 @@ class AirthingsPlugin {
       console.log('Temperature value');
       console.log(roundInt(this.valuest[airthings_temperature]));
       
+      this.humidityService
+        .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(this.valuest[airthings_humidity]));
       this.temperatureService
         .setCharacteristic(Characteristic.CurrentTemperature, roundInt(this.valuest[airthings_temperature]));
 //      this.temperatureService
 //        .setCharacteristic(CustomCharacteristic.AtmosphericPressureLevel, roundInt(data.pressure_hPa));
-      this.humidityService
-        .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(this.valuest[airthings_humidity]));
       console.log('Done with updating values');
       });
 //        .catch(err => {
