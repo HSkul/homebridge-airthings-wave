@@ -42,7 +42,7 @@ class AirthingsPlugin {
 //    }
 //  Shouldn't need any of this:
 
-    this.init = false;
+//    this.init = false;
     this.strvalues = ''
     this.valuest = {};
 /*    
@@ -90,7 +90,7 @@ class AirthingsPlugin {
 
     this.temperatureService.log = this.log;
 //    this.loggingService = new FakeGatoHistoryService("weather", this.temperatureService);
-    this.init = true;
+    //this.init = true;
     console.log('init should be true');
   }
 
@@ -143,16 +143,16 @@ class AirthingsPlugin {
       console.log(roundInt(this.valuest[airthings_humidity]));
       console.log('Temperature value');
       console.log(roundInt(this.valuest[airthings_temperature]));
-      console.log(this.init);
-      if (this.init) {
-        this.humidityService
-          .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(this.valuest[airthings_humidity]));
-        this.temperatureService
-          .setCharacteristic(Characteristic.CurrentTemperature, roundInt(this.valuest[airthings_temperature]));
-//        this.temperatureService
-//          .setCharacteristic(CustomCharacteristic.AtmosphericPressureLevel, roundInt(data.pressure_hPa));
-        console.log('Done with updating values');
-      }
+      console.log('this should be the bt address');
+      console.log(this.address);
+      
+      this.humidityService
+        .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(this.valuest[airthings_humidity]));
+      this.temperatureService
+        .setCharacteristic(Characteristic.CurrentTemperature, roundInt(this.valuest[airthings_temperature]));
+//      this.temperatureService
+//        .setCharacteristic(CustomCharacteristic.AtmosphericPressureLevel, roundInt(data.pressure_hPa));
+      console.log('Done with updating values');
     });
 //        .catch(err => {
 //          this.log(`BME read error: ${err}`);
