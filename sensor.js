@@ -106,17 +106,17 @@ class AirthingsPlugin {
     var valuest
     var spawn = require("child_process").spawn;
     var pythonProcess = spawn('python',['/home/pi/quary_wave.py', this.address]);
-// We are getting all three values together so we need to split them up
     pythonProcess.stdout.on('data', function(data) {
       strvalues = data.toString('utf8');
       console.log('Here is data');
       console.log(strvalues);
     });
-//    pythonProcess.stdout.on('end', function(){
+    pythonProcess.stdout.on('end', function(){
 //      console.log(strvalues);
-    valuest = strvalues.split(' ');
+      valuest = strvalues.split(' ');
 //      console.log(this.valuest);
-      
+
+    });
 //      this.humidity = values[airthings_humidity]
 //      this.temperature = values[airthings_temperature]
 
@@ -141,6 +141,7 @@ class AirthingsPlugin {
             }
           }
 */
+
     console.log('Humidity value');
     console.log(roundInt(valuest[airthings_humidity]));
     console.log('Temperature value');
