@@ -9,6 +9,7 @@ var debug = require('debug'); //('BME280');
 const airthings_humidity = 0;
 const airthings_temperature = 1;
 const airthings_radon_st = 2;
+const arithings_radon_lt = 3;
 
 //var os = require("os");
 //var hostname = os.hostname();
@@ -32,7 +33,7 @@ class AirthingsPlugin {
     this.name = config.name;
     this.name_temperature = config.name_temperature || this.name;
     this.name_humidity = config.name_humidity || this.name;
-    this.refresh = config['refresh'] || 60; // Update every minute
+    this.refresh = config['refresh'] || 3600; // Update every hour
     this.address = config.address;
 
 //    this.options = config.options || {};
@@ -82,6 +83,8 @@ class AirthingsPlugin {
 
     this.temperatureService
       .addCharacteristic(CustomCharacteristic.RadonLevelShortTermAverage);
+    this.temperatureService
+      .addCharacteristic(CustomCharacteristic.RadonLevelLongTermAverage);
 
     setInterval(this.devicePolling.bind(this), this.refresh * 1000);
 
@@ -125,14 +128,11 @@ class AirthingsPlugin {
             }
           }
 */
-      console.log('Humidity value');
-      console.log(roundInt(valuest[airthings_humidity]));
-      console.log('Temperature value');
-      console.log(roundInt(valuest[airthings_temperature]));
-      console.log('Radon value');
-      console.log(roundInt(valuest[airthings_radon_st]));
-      console.log('this should be the bt address again');
-      console.log(this.address);
+      console.log('Humidity value ',roundInt(valuest[airthings_humidity]));
+      console.log('Temperature value ',roundInt(valuest[airthings_temperature]));
+      console.log('Radon short term value ',roundInt(valuest[airthings_radon_st]));
+      console.log('Radon long term value ',roundInt(valuest[airthings_radon_lt]));
+      console.log('this should be the bt address again ',this.address);
       
       this.humidityService
         .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(valuest[airthings_humidity]));
@@ -140,6 +140,9 @@ class AirthingsPlugin {
         .setCharacteristic(Characteristic.CurrentTemperature, roundInt(valuest[airthings_temperature]));
       this.temperatureService
         .setCharacteristic(CustomCharacteristic.RadonLevelShortTermAverage, roundInt(valuest[airthings_radon_st]));
+      this.temperatureService
+        .setCharacteristic(CustomCharacteristic.RadonLevelLongTermAverage, roundInt(valuest[airthings_radon_lt]));
+      
     });
 //        .catch(err => {
 //          this.log(`BME read error: ${err}`);
