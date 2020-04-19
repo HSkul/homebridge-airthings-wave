@@ -106,16 +106,18 @@ class AirthingsPlugin {
     var valuest
     var spawn = require("child_process").spawn;
     var pythonProcess = spawn('python',['/home/pi/quary_wave.py', this.address]);
-    pythonProcess.stdout.on('data', function(data) {
+    pythonProcess.stdout.on('data', (data) => {
       strvalues = data.toString('utf8');
       console.log('Here is data');
       console.log(strvalues);
-    });
-    pythonProcess.stdout.on('end', function(){
+      console.log('Blue tooth address 2', this.address);
+//    });
+//    console.log('Blue tooth address 3', this.address);
+//    pythonProcess.stdout.on('end', function(){
 //      console.log(strvalues);
       valuest = strvalues.split(' ');
 //      console.log(this.valuest);
-
+//      console.log('Blue tooth address 4', this.address);
 //    });
 //      this.humidity = values[airthings_humidity]
 //      this.temperature = values[airthings_temperature]
