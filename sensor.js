@@ -43,8 +43,8 @@ class AirthingsPlugin {
 //  Shouldn't need any of this:
 
 //    this.init = false;
-    this.strvalues = ''
-    this.valuest = {};
+//    this.strvalues = ''
+//    this.valuest = {};
 /*    
     if ('i2cBusNo' in this.options) this.options.i2cBusNo = parseInt(this.options.i2cBusNo);
     if ('i2cAddress' in this.options) this.options.i2cAddress = parseInt(this.options.i2cAddress);
@@ -106,13 +106,13 @@ class AirthingsPlugin {
     var pythonProcess = spawn('python',['/home/pi/quary_wave.py', this.address]);
 // We are getting all three values together so we need to split them up
     pythonProcess.stdout.on('data', function(data) {
-      this.strvalues = data.toString('utf8');
+      var strvalues = data.toString('utf8');
       console.log('Here is data');
-      console.log(data);
-//    });
+      console.log(strvalues);
+    });
 //    pythonProcess.stdout.on('end', function(){
 //      console.log(strvalues);
-      this.valuest = this.strvalues.split(' ');
+    var valuest = strvalues.split(' ');
 //      console.log(this.valuest);
       
 //      this.humidity = values[airthings_humidity]
@@ -139,21 +139,21 @@ class AirthingsPlugin {
             }
           }
 */
-      console.log('Humidity value');
-      console.log(roundInt(this.valuest[airthings_humidity]));
-      console.log('Temperature value');
-      console.log(roundInt(this.valuest[airthings_temperature]));
-      console.log('this should be the bt address');
-      console.log(this.address);
+    console.log('Humidity value');
+    console.log(roundInt(this.valuest[airthings_humidity]));
+    console.log('Temperature value');
+    console.log(roundInt(this.valuest[airthings_temperature]));
+    console.log('this should be the bt address again');
+    console.log(this.address);
       
-      this.humidityService
-        .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(this.valuest[airthings_humidity]));
-      this.temperatureService
-        .setCharacteristic(Characteristic.CurrentTemperature, roundInt(this.valuest[airthings_temperature]));
-//      this.temperatureService
-//        .setCharacteristic(CustomCharacteristic.AtmosphericPressureLevel, roundInt(data.pressure_hPa));
-      console.log('Done with updating values');
-    });
+    this.humidityService
+      .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(valuest[airthings_humidity]));
+    this.temperatureService
+      .setCharacteristic(Characteristic.CurrentTemperature, roundInt(valuest[airthings_temperature]));
+//    this.temperatureService
+//      .setCharacteristic(CustomCharacteristic.AtmosphericPressureLevel, roundInt(data.pressure_hPa));
+    console.log('Done with updating values');
+    
 //        .catch(err => {
 //          this.log(`BME read error: ${err}`);
 //          debug(err.stack);
