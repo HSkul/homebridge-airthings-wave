@@ -40,10 +40,12 @@ class AirthingsPlugin {
 //      this.log_event_counter = 59;
 //      this.logger = new logger(this.spreadsheetId);
 //    }
-/*  Shouldn't need any of this:
+//  Shouldn't need any of this:
 
-    this.init = false;
-    this.data = {};
+//    this.init = false;
+    this.strvalues = ''
+    this.valuest = {};
+/*    
     if ('i2cBusNo' in this.options) this.options.i2cBusNo = parseInt(this.options.i2cBusNo);
     if ('i2cAddress' in this.options) this.options.i2cAddress = parseInt(this.options.i2cAddress);
     this.log(`BME280 sensor options: ${JSON.stringify(this.options)}`);
@@ -98,19 +100,19 @@ class AirthingsPlugin {
     console.log('getting to the python call');
     console.log('Blue tooth address');
     console.log(this.address);
-    var strvalues = ''
+    
     var spawn = require("child_process").spawn;
     var pythonProcess = spawn('python',['/home/pi/quary_wave.py', this.address]);
 // We are getting all three values together so we need to split them up
     pythonProcess.stdout.on('data', function(data) {
-      strvalues = data.toString('utf8');
+      this.strvalues = data.toString('utf8');
 //      console.log('Here is data');
 //      console.log(data);
 //    });
 //    pythonProcess.stdout.on('end', function(){
-      console.log(strvalues);
-      const valuest = strvalues.split(' ');
-      console.log(valuest);
+//      console.log(strvalues);
+      this.valuest = this.strvalues.split(' ');
+//      console.log(this.valuest);
       
 //      this.humidity = values[airthings_humidity]
 //      this.temperature = values[airthings_temperature]
@@ -137,16 +139,16 @@ class AirthingsPlugin {
           }
 */
       console.log('Humidity value');
-      console.log(roundInt(valuest[airthings_humidity]));
+      console.log(roundInt(this.valuest[airthings_humidity]));
       console.log('Temperature value');
-      console.log(roundInt(valuest[airthings_temperature]));
+      console.log(roundInt(this.valuest[airthings_temperature]));
       
       this.temperatureService
-        .setCharacteristic(Characteristic.CurrentTemperature, roundInt(valuest[airthings_temperature]));
+        .setCharacteristic(Characteristic.CurrentTemperature, roundInt(this.valuest[airthings_temperature]));
 //      this.temperatureService
 //        .setCharacteristic(CustomCharacteristic.AtmosphericPressureLevel, roundInt(data.pressure_hPa));
       this.humidityService
-        .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(valuest[airthings_humidity]));
+        .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(this.valuest[airthings_humidity]));
       console.log('Done with updating values');
       });
 //        .catch(err => {
