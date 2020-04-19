@@ -41,10 +41,6 @@ class AirthingsPlugin {
 //      this.logger = new logger(this.spreadsheetId);
 //    }
 //  Shouldn't need any of this:
-
-//    this.init = false;
-//    this.strvalues = ''
-//    this.valuest = {};
 /*    
     if ('i2cBusNo' in this.options) this.options.i2cBusNo = parseInt(this.options.i2cBusNo);
     if ('i2cAddress' in this.options) this.options.i2cAddress = parseInt(this.options.i2cAddress);
@@ -65,7 +61,7 @@ class AirthingsPlugin {
 /*    })
       .catch(err => this.log(`BME280 initialization failed: ${err} `));
 */
-    console.log('defining services');
+
     this.informationService = new Service.AccessoryInformation();
     this.informationService
       .setCharacteristic(Characteristic.Manufacturer, "Airthings")
@@ -82,7 +78,7 @@ class AirthingsPlugin {
         maxValue: 100
       });
     //        .on('get', this.getCurrentTemperature.bind(this));
-    console.log('defining services complete');
+
 //    this.temperatureService
 //      .addCharacteristic(CustomCharacteristic.AtmosphericPressureLevel);
 
@@ -90,17 +86,15 @@ class AirthingsPlugin {
 
     this.temperatureService.log = this.log;
 //    this.loggingService = new FakeGatoHistoryService("weather", this.temperatureService);
-    //this.init = true;
-    console.log('init should be true');
+
   }
 
   devicePolling() {
 //    debug("Calling Python Script with output:");
 //    this.log("Calling Python Script for Airthings");
 //    if (this.sensor) {
-    console.log('getting to the python call');
-    console.log('Blue tooth address ', this.address);
-    console.log(this.address);
+//    console.log('getting to the python call');
+//    console.log('Blue tooth address ', this.address);
     
     var strvalues
     var valuest
@@ -108,20 +102,7 @@ class AirthingsPlugin {
     var pythonProcess = spawn('python',['/home/pi/quary_wave.py', this.address]);
     pythonProcess.stdout.on('data', (data) => {
       strvalues = data.toString('utf8');
-      console.log('Here is data');
-      console.log(strvalues);
-      console.log('Blue tooth address 2', this.address);
-//    });
-//    console.log('Blue tooth address 3', this.address);
-//    pythonProcess.stdout.on('end', function(){
-//      console.log(strvalues);
       valuest = strvalues.split(' ');
-//      console.log(this.valuest);
-//      console.log('Blue tooth address 4', this.address);
-//    });
-//      this.humidity = values[airthings_humidity]
-//      this.temperature = values[airthings_temperature]
-
 
 // Her we need to get data from the Airthings and store it
 //      this.sensor.readSensorData()
@@ -143,7 +124,6 @@ class AirthingsPlugin {
             }
           }
 */
-
       console.log('Humidity value');
       console.log(roundInt(valuest[airthings_humidity]));
       console.log('Temperature value');
@@ -157,7 +137,6 @@ class AirthingsPlugin {
         .setCharacteristic(Characteristic.CurrentTemperature, roundInt(valuest[airthings_temperature]));
 //      this.temperatureService
 //        .setCharacteristic(CustomCharacteristic.AtmosphericPressureLevel, roundInt(data.pressure_hPa));
-      console.log('Done with updating values');
     });
 //        .catch(err => {
 //          this.log(`BME read error: ${err}`);
