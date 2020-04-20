@@ -9,7 +9,7 @@ var debug = require('debug'); //('BME280');
 const airthings_humidity = 0;
 const airthings_temperature = 1;
 const airthings_radon_st = 2;
-const arithings_radon_lt = 3;
+const airthings_radon_lt = 3;
 
 //var os = require("os");
 //var hostname = os.hostname();
