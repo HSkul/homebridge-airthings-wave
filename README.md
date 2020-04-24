@@ -15,7 +15,7 @@ Make sure the Raspberry Pi is bluetooth capable and that it is located within bl
 ## Installation
 1.	Install Homebridge using `npm install -g homebridge`
 2.	Install this plugin ` npm install -g --unsafe-perm https://github.com/HSkul/homebridge-airthings-wave`
-3.  Download quary_wave.py Python script
+3.  Download quary_wave.py Python script and place it in /home/pi.  Make sure the user running homebridge has peremission to execute it
 4.  Download find_wave.py Python script from [here](https://airthings.com/tech/find_wave.py)
 3.	Update your configuration file - see below for an example
 
