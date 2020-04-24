@@ -1,28 +1,26 @@
 'use strict';
 
-//const bme280_sensor = require('bme280-sensor');
-var debug = require('debug'); //('BME280');
-//var logger = require("mcuiot-logger").logger;
-//const moment = require('moment');
+var debug = require('debug');
+var logger = require("mcuiot-logger").logger;
+const moment = require('moment');
 
-//const airthings_date = 1;
 const airthings_humidity = 0;
 const airthings_temperature = 1;
 const airthings_radon_st = 2;
 const airthings_radon_lt = 3;
 
-//var os = require("os");
-//var hostname = os.hostname();
+var os = require("os");
+var hostname = os.hostname();
 
 let Service, Characteristic;
 var CustomCharacteristic;
-//var FakeGatoHistoryService;
+var FakeGatoHistoryService;
 
 module.exports = (homebridge) => {
   Service = homebridge.hap.Service;
   Characteristic = homebridge.hap.Characteristic;
   CustomCharacteristic = require('./lib/CustomCharacteristic.js')(homebridge);
-//  FakeGatoHistoryService = require('fakegato-history')(homebridge);
+  FakeGatoHistoryService = require('fakegato-history')(homebridge);
 
   homebridge.registerAccessory('homebridge-airthings-wave', 'Airthings', AirthingsPlugin);
 };
@@ -36,34 +34,14 @@ class AirthingsPlugin {
     this.refresh = config['refresh'] || 3600; // Update every hour
     this.address = config.address;
 
-//    this.options = config.options || {};
-//    this.spreadsheetId = config['spreadsheetId'];
-//    if (this.spreadsheetId) {
-//      this.log_event_counter = 59;
-//      this.logger = new logger(this.spreadsheetId);
-//    }
-//  Shouldn't need any of this:
-/*    
-    if ('i2cBusNo' in this.options) this.options.i2cBusNo = parseInt(this.options.i2cBusNo);
-    if ('i2cAddress' in this.options) this.options.i2cAddress = parseInt(this.options.i2cAddress);
-    this.log(`BME280 sensor options: ${JSON.stringify(this.options)}`);
-
-    try {
-      this.sensor = new bme280_sensor(this.options);
-    } catch (ex) {
-      this.log("BME280 initialization failed:", ex);
+    this.options = config.options || {};
+    this.spreadsheetId = config['spreadsheetId'];
+    if (this.spreadsheetId) {
+      this.log_event_counter = 2;
+      this.logger = new logger(this.spreadsheetId);
     }
 
-    if (this.sensor)
-      this.sensor.init()
-      .then(result => {
-        this.log(`BME280 initialization succeeded`);
-        this.init = true;  */
     this.devicePolling.bind(this);
-/*    })
-      .catch(err => this.log(`BME280 initialization failed: ${err} `));
-*/
-
     this.informationService = new Service.AccessoryInformation();
     this.informationService
       .setCharacteristic(Characteristic.Manufacturer, "Airthings")
@@ -79,7 +57,6 @@ class AirthingsPlugin {
         minValue: -100,
         maxValue: 100
       });
-    //        .on('get', this.getCurrentTemperature.bind(this));
 
     this.temperatureService
       .addCharacteristic(CustomCharacteristic.RadonLevelShortTermAverage);
@@ -89,17 +66,10 @@ class AirthingsPlugin {
     setInterval(this.devicePolling.bind(this), this.refresh * 1000);
 
     this.temperatureService.log = this.log;
-//    this.loggingService = new FakeGatoHistoryService("weather", this.temperatureService);
-
+    this.loggingService = new FakeGatoHistoryService("radon", this.temperatureService);
   }
 
   devicePolling() {
-//    debug("Calling Python Script with output:");
-//    this.log("Calling Python Script for Airthings");
-//    if (this.sensor) {
-//    console.log('getting to the python call');
-//    console.log('Blue tooth address ', this.address);
-    
     var strvalues
     var valuest
     var spawn = require("child_process").spawn;
@@ -108,31 +78,26 @@ class AirthingsPlugin {
       strvalues = data.toString('utf8');
       valuest = strvalues.split(' ');
 
-// Her we need to get data from the Airthings and store it
-//      this.sensor.readSensorData()
-//        .then(data => {
-//          this.log(`data(temp) = ${JSON.stringify(data, null, 2)}`);
+      this.log('Humidity value ',roundInt(valuest[airthings_humidity]));
+      this.log('Temperature value ',roundInt(valuest[airthings_temperature]));
+      this.log('Radon short term value ',roundInt(valuest[airthings_radon_st]));
+      this.log('Radon long term value ',roundInt(valuest[airthings_radon_lt]));
 
- /*         this.loggingService.addEntry({
-            time: moment().unix(),
-            temp: roundInt(data.temperature_C),
-            pressure: roundInt(data.pressure_hPa),
-            humidity: roundInt(data.humidity)
-          });
+      this.loggingService.addEntry({
+        time: moment().unix(),
+        temp: roundInt(valuest[airthings_temperature]),
+        humidity: roundInt(valuest[airthings_humidity]),
+        radon_st: roundInt(valuest[airthings_radon_st]),
+        radon_lt: roundInt(valuest[airthings_radon_lt])
+      });
 
-          if (this.spreadsheetId) {
-            this.log_event_counter = this.log_event_counter + 1;
-            if (this.log_event_counter > 59) {
-              this.logger.storeBME(this.name, 0, roundInt(data.temperature_C), roundInt(data.humidity), roundInt(data.pressure_hPa));
-              this.log_event_counter = 0;
-            }
-          }
-*/
-      console.log('Humidity value ',roundInt(valuest[airthings_humidity]));
-      console.log('Temperature value ',roundInt(valuest[airthings_temperature]));
-      console.log('Radon short term value ',roundInt(valuest[airthings_radon_st]));
-      console.log('Radon long term value ',roundInt(valuest[airthings_radon_lt]));
-      console.log('this should be the bt address again ',this.address);
+      if (this.spreadsheetId) {
+        this.log_event_counter = this.log_event_counter + 1;
+        if (this.log_event_counter > 2) {
+          this.logger.storeBME(this.name, 0, roundInt(valuest[airthings_temperature]), roundInt(valuest[airthings_humidity]), roundInt(valuest[airthings_radon_st]), roundInt(valuest[airthings_radon_lt]));
+          this.log_event_counter = 0;
+        }
+      }
       
       this.humidityService
         .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(valuest[airthings_humidity]));
@@ -142,23 +107,11 @@ class AirthingsPlugin {
         .setCharacteristic(CustomCharacteristic.RadonLevelShortTermAverage, roundInt(valuest[airthings_radon_st]));
       this.temperatureService
         .setCharacteristic(CustomCharacteristic.RadonLevelLongTermAverage, roundInt(valuest[airthings_radon_lt]));
-      
     });
-//        .catch(err => {
-//          this.log(`BME read error: ${err}`);
-//          debug(err.stack);
-//          if (this.spreadsheetId) {
-//            this.logger.storeBME(this.name, 1, -999, -999, -999);
-//          }
-//
-//        });
-//    } else {
-//      this.log("Error: BME280 Not Initalized");
-//    }
   }
 
   getServices() {
-    return [this.informationService, this.temperatureService, this.humidityService] //, this.loggingService]
+    return [this.informationService, this.temperatureService, this.humidityService, this.loggingService]
   }
 }
 
