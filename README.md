@@ -41,7 +41,6 @@ Example configuration:
             "name_humidity": "Humidity",
             "address": "AA:BB:CC:DD:11:22",
             "spreadsheetId": "abc1234567"
-            }
         }
     ]
 ```
