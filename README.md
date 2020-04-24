@@ -3,49 +3,44 @@
 [Airthings Wave](https://www.airthings.com/)
 temperature/humidity/radon sensor service plugin for [Homebridge](https://github.com/nfarina/homebridge).
 
-Ignore below
-[![NPM Downloads](https://img.shields.io/npm/dm/homebridge-bme280.svg?style=flat)](https://npmjs.org/package/homebridge-airthings-wave)
-
-* Display of temperature, humidity and Barometric Pressure from a BME280 connected to a RaspberryPI.
-* Archives results every hour to a google spreadsheet
+* Display of temperature, humidity and radon (short- and long-term average) from Airthings Wave via Raspberry Pi
+* Only temperature and humidity can be viewed in the Home app, radon levels can be viewed using Eve app (and others)
+* Archives results every 3 hours to a google spreadsheet
 * Support the graphing feature of the Eve app for trends
-
-Uses [bme280-sensor](https://www.npmjs.com/package/bme280-sensor)
 
 # Build Instructions
 
-Detailed build instructions are available here. https://www.instructables.com/id/Connect-Your-RaspberryPI-to-the-BME280-Temperature/
+Make sure the Raspberry Pi is bluetooth capable and that it is located within bluetooth range of the Airthings Wave.
 
 ## Installation
 1.	Install Homebridge using `npm install -g homebridge`
-2.	Install this plugin `npm install -g homebridge-bme280`
+2.	Install this plugin ` npm install -g --unsafe-perm https://github.com/HSkul/homebridge-airthings-wave`
+3.  Download quary_wave.py Python script
+4.  Download find_wave.py Python script from [here](https://airthings.com/tech/find_wave.py)
 3.	Update your configuration file - see below for an example
 
-Connect the BME280 chip to the I2C bus
+Use 'python find_wave.py SN' to find the bluetooth address of your Airthings Wave radon sensor, where SN is the serial number of your radon sensor (found on the back of it).  Setup config.json according to below. 
 
 ## Configuration
-* `accessory`: "BME280"
+* `accessory`: "Airthings"
 * `name`: descriptive name
 * `name_temperature` (optional): descriptive name for the temperature sensor
 * `name_humidity` (optional): descriptive name for the humidity sensor
-* `refresh`: Optional, time interval for refreshing data in seconds, defaults to 60 seconds.
-* `options`: options for [bme280-sensor](https://www.npmjs.com/package/bme280-sensor)
+* `address`: bluetooth address of Wave obtained from find_wave.py
+* `refresh`: Optional, time interval for refreshing data in seconds, defaults to 1h
 * `spreadsheetId` ( optional ): Log data to a google sheet, this is part of the URL of your spreadsheet.  ie the spreadsheet ID in the URL https://docs.google.com/spreadsheets/d/abc1234567/edit#gid=0 is "abc1234567".
-
-If you get an I/O error, make sure the I2C address is correct (usually 0x76 or 0x77 depending on a jumper).
 
 Example configuration:
 
 ```json
     "accessories": [
         {
-            "accessory": "BME280",
+            "accessory": "Airthings",
             "name": "Sensor",
             "name_temperature": "Temperature",
             "name_humidity": "Humidity",
-            "options": {
-              "i2cBusNo": 1,
-              "i2cAddress": "0x76"
+            "address": "AA:BB:CC:DD:11:22",
+            "spreadsheetId": "abc1234567"
             }
         }
     ]
@@ -95,12 +90,12 @@ e. Copy the code you're given, paste it into the command-line prompt, and press 
 
 ## See also
 
-* [homebridge-ds18b20](https://www.npmjs.com/package/homebridge-ds18b20)
+* [homebridge-bme280](https://www.npmjs.com/package/homebridge-bme280)
 * [homebridge-dht-sensor](https://www.npmjs.com/package/homebridge-dht-sensor)
-* [homebridge-dht](https://www.npmjs.com/package/homebridge-dht)
+* [Airthings Wave](https://www.airthings.com)
 
 ## Credits
-* NorthernMan54 - Barometric Pressure and Device Polling
+* NorthernMan54/rxseger - Barometric Pressure and Device Polling
 * simont77 - History Service
 
 ## License
