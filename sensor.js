@@ -1,26 +1,26 @@
 'use strict';
 
-var debug = require('debug');
-var logger = require("mcuiot-logger").logger;
-const moment = require('moment');
+//var debug = require('debug');
+//var logger = require("mcuiot-logger").logger;
+//const moment = require('moment');
 
 const airthings_humidity = 0;
 const airthings_temperature = 1;
 const airthings_radon_st = 2;
 const airthings_radon_lt = 3;
 
-var os = require("os");
-var hostname = os.hostname();
+//var os = require("os");
+//var hostname = os.hostname();
 
 let Service, Characteristic;
 var CustomCharacteristic;
-var FakeGatoHistoryService;
+//var FakeGatoHistoryService;
 
 module.exports = (homebridge) => {
   Service = homebridge.hap.Service;
   Characteristic = homebridge.hap.Characteristic;
   CustomCharacteristic = require('./lib/CustomCharacteristic.js')(homebridge);
-  FakeGatoHistoryService = require('fakegato-history')(homebridge);
+//  FakeGatoHistoryService = require('fakegato-history')(homebridge);
 
   homebridge.registerAccessory('homebridge-airthings-wave', 'Airthings', AirthingsPlugin);
 };
@@ -33,12 +33,13 @@ class AirthingsPlugin {
     this.name_humidity = config.name_humidity || this.name;
     this.refresh = config['refresh'] || 3600; // Update every hour
     this.address = config.address;
+    this.path = config.path;
 
-    this.options = config.options || {};
-    this.spreadsheetId = config['spreadsheetId'];
-    if (this.spreadsheetId) {
-      this.log_event_counter = 2;
-      this.logger = new logger(this.spreadsheetId);
+//    this.options = config.options || {};
+//    this.spreadsheetId = config['spreadsheetId'];
+//    if (this.spreadsheetId) {
+//      this.log_event_counter = 2;
+//      this.logger = new logger(this.spreadsheetId);
     }
 
     this.devicePolling.bind(this);
@@ -66,24 +67,24 @@ class AirthingsPlugin {
     setInterval(this.devicePolling.bind(this), this.refresh * 1000);
 
     this.temperatureService.log = this.log;
-    this.loggingService = new FakeGatoHistoryService("radon", this.temperatureService);
+//    this.loggingService = new FakeGatoHistoryService("radon", this.temperatureService);
   }
 
   devicePolling() {
     var strvalues
     var valuest
     var spawn = require("child_process").spawn;
-    var pythonProcess = spawn('python',['/home/pi/quary_wave.py', this.address]);
+    var pythonProcess = spawn('python',[this.path, this.address]);
     pythonProcess.stdout.on('data', (data) => {
       strvalues = data.toString('utf8');
       valuest = strvalues.split(' ');
 
-      this.log('Humidity value ',roundInt(valuest[airthings_humidity]));
-      this.log('Temperature value ',roundInt(valuest[airthings_temperature]));
-      this.log('Radon short term value ',roundInt(valuest[airthings_radon_st]));
-      this.log('Radon long term value ',roundInt(valuest[airthings_radon_lt]));
+      this.log('Humidity: ',roundInt(valuest[airthings_humidity]));
+      this.log('Temperature: ',roundInt(valuest[airthings_temperature]));
+      this.log('Radon short term: ',roundInt(valuest[airthings_radon_st]));
+      this.log('Radon long term: ',roundInt(valuest[airthings_radon_lt]));
 
-      this.loggingService.addEntry({
+/*      this.loggingService.addEntry({
         time: moment().unix(),
         temp: roundInt(valuest[airthings_temperature]),
         humidity: roundInt(valuest[airthings_humidity]),
@@ -98,7 +99,7 @@ class AirthingsPlugin {
           this.log_event_counter = 0;
         }
       }
-      
+*/      
       this.humidityService
         .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(valuest[airthings_humidity]));
       this.temperatureService
@@ -111,7 +112,7 @@ class AirthingsPlugin {
   }
 
   getServices() {
-    return [this.informationService, this.temperatureService, this.humidityService, this.loggingService]
+    return [this.informationService, this.temperatureService, this.humidityService] //, this.loggingService]
   }
 }
 
