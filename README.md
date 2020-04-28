@@ -38,7 +38,7 @@ Example configuration:
             "name_temperature": "Temperature",
             "name_humidity": "Humidity",
             "address": "AA:BB:CC:DD:11:22",
-            "refersh": 900,
+            "refresh": 900,
             "path": "/var/lib/homebridge/quary_wave.py"
         }
     ]
