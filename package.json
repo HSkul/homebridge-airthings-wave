@@ -1,6 +1,6 @@
 {
   "name": "homebridge-airthings-wave",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Airthings Wave radon sensor bridge for Homebridge: https://github.com/nfarina/homebridge",
   "main": "sensor.js",
   "scripts": {
@@ -29,10 +29,6 @@
   },
   "homepage": "https://github.com/HSkul/homebridge-airthings-wave#readme",
   "dependencies": {
-    "debug": "^2.2.0",
-    "mcuiot-logger": "^0.0.7",
-    "moment": "^2.18.1",
-    "fakegato-history": "^0.3.5"
   }
 }
  
