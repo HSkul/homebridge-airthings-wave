@@ -27,7 +27,7 @@ class AirthingsPlugin {
 //    this.path = config.path || "/home/pi/quary_wave.py";
     }
 
-    this.devicePolling.bind(this);
+//    this.devicePolling.bind(this);
     this.informationService = new Service.AccessoryInformation();
     this.informationService
       .setCharacteristic(Characteristic.Manufacturer, "Airthings")
