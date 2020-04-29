@@ -1,10 +1,10 @@
 {
   "name": "homebridge-airthings-wave",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Airthings Wave radon sensor bridge for Homebridge: https://github.com/nfarina/homebridge",
   "main": "sensor.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
