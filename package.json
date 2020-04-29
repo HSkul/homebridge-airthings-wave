@@ -1,6 +1,6 @@
 {
   "name": "homebridge-airthings-wave",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Airthings Wave radon sensor bridge for Homebridge: https://github.com/nfarina/homebridge",
   "main": "sensor.js",
   "scripts": {
