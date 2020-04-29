@@ -12,6 +12,7 @@ module.exports = (homebridge) => {
   Service = homebridge.hap.Service;
   Characteristic = homebridge.hap.Characteristic;
   CustomCharacteristic = require('./lib/CustomCharacteristic.js')(homebridge);
+  
   homebridge.registerAccessory('homebridge-airthings-wave', 'Airthings', AirthingsPlugin);
 };
 
@@ -23,7 +24,7 @@ class AirthingsPlugin {
     this.name_humidity = config.name_humidity || this.name;
     this.refresh = config['refresh'] || 3600; // Update every hour
     this.address = config.address;
-    this.path = config.path || '/home/pi/quary_wave.py';
+    this.path = config.path || "/home/pi/quary_wave.py";
     }
 
     this.devicePolling.bind(this);
@@ -49,7 +50,7 @@ class AirthingsPlugin {
       .addCharacteristic(CustomCharacteristic.RadonLevelLongTermAverage);
 
     setInterval(this.devicePolling.bind(this), this.refresh * 1000);
-    this.temperatureService.log = this.log;
+    //this.temperatureService.log = this.log;
   }
 
   devicePolling() {
