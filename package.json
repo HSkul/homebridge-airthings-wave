@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/HSkul/homebridge-airthings-wave#readme",
   "dependencies": {
+    "debug": ">2.2.0"
   }
 }
  
