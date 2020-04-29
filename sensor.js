@@ -24,7 +24,7 @@ class AirthingsPlugin {
     this.name_humidity = config.name_humidity || this.name;
     this.refresh = config['refresh'] || 3600; // Update every hour
     this.address = config.address;
-    this.path = config.path || "/home/pi/quary_wave.py";
+//    this.path = config.path || "/home/pi/quary_wave.py";
     }
 
     this.devicePolling.bind(this);
