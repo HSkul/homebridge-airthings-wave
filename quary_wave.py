@@ -58,7 +58,7 @@ class Wave():
         self.radon_st_avg_char = self.periph.getCharacteristics(uuid=self.UUID_RADON_ST_AVG)[0]
         self.radon_lt_avg_char = self.periph.getCharacteristics(uuid=self.UUID_RADON_LT_AVG)[0]
         
-   def read(self, sensor_idx):
+    def read(self, sensor_idx):
         if (sensor_idx==SENSOR_IDX_DATETIME and self.datetime_char!=None):
                 rawdata = self.datetime_char.read()
                 rawdata = struct.unpack('HBBBBB', rawdata)
