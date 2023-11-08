@@ -1,5 +1,5 @@
 
-# Usage: quary_wave.py BTaddress
+# Usage: wave_read.py BTaddress
 # Output Humidity Temperature Radon_shortterm Radon_shortterm
 # ===============================
 # Module import dependencies
@@ -50,7 +50,7 @@ class Wave():
 
     def connect(self):
         scanner     = Scanner().withDelegate(DefaultDelegate())
-        # This Scanner must be an external function that scans the Bluetooth for a device
+        # This Scanner is an external function that scans the Bluetooth for a device
         self.periph = Peripheral(BTAddress)
         self.datetime_char     = self.periph.getCharacteristics(uuid=self.UUID_DATETIME)[0]
         self.humidity_char     = self.periph.getCharacteristics(uuid=self.UUID_HUMIDITY)[0]
