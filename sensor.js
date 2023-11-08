@@ -4,6 +4,9 @@ const airthings_humidity = 0;
 const airthings_temperature = 1;
 const airthings_radon_st = 2;
 const airthings_radon_lt = 3;
+const airthings_pressure = 4;
+const airtings_CO2 = 5;
+const airthings_VOC = 6;
 
 let Service, Characteristic;
 var CustomCharacteristic;
@@ -20,8 +23,9 @@ class AirthingsPlugin {
   constructor(log, config) {
     this.log = log;
     this.name = config.name;
+    this.waveplus = config.waveplus || false
     this.name_temperature = config.name_temperature || this.name;
-    this.name_humidity = config.name_humidity || this.name;
+    this.name_humidity = config.name_humidity || this.name; 
     this.refresh = config['refresh'] || 3600; // Update every hour
     this.address = config.address;
     this.path = config.path || "/home/pi/quary_wave.py";
@@ -34,7 +38,14 @@ class AirthingsPlugin {
       .setCharacteristic(Characteristic.SerialNumber, this.address)
       .setCharacteristic(Characteristic.FirmwareRevision, require('./package.json').version);
 
+    
     this.humidityService = new Service.HumiditySensor(this.name_humidity);
+    this.humidityService
+      .getCharacteristic(Characteristic.CurrentHumidity)
+      .setProps({
+        minValue: 0,
+        maxValue: 100
+      });
     this.temperatureService = new Service.TemperatureSensor(this.name_temperature);
     this.temperatureService
       .getCharacteristic(Characteristic.CurrentTemperature)
@@ -47,6 +58,14 @@ class AirthingsPlugin {
       .addCharacteristic(CustomCharacteristic.RadonLevelShortTermAverage);
     this.temperatureService
       .addCharacteristic(CustomCharacteristic.RadonLevelLongTermAverage);
+    if(this.waveplus) {
+      this.name_CO2 = config.name_CO2 || this.name;
+      this.carbonDioxideSensorService = new Service.CarbonDioxideSensor(this.name_CO2);
+      this.carbonDioxideSensorService
+        .addCharacteristic(CustomCharacteristic.VOClevel);
+      this.humidityService
+        .addCharacteristic(CustomCharacteristic.Pressure);
+    }
 
     setInterval(this.devicePolling.bind(this), this.refresh * 1000);
     //this.temperatureService.log = this.log;
@@ -65,6 +84,11 @@ class AirthingsPlugin {
       this.log('Temperature: ',roundInt(valuest[airthings_temperature]));
       this.log('Radon short term: ',roundInt(valuest[airthings_radon_st]));
       this.log('Radon long term: ',roundInt(valuest[airthings_radon_lt]));
+      if(this.waveplus) {
+        this.log('Pressure: ',roundInt(valuest[airthings_pressure]));
+        this.log('Carbon dioxide: ',roundInt(valuest[airthings_CO2]));
+        this.log('Organics: ',roundInt(valuest[airthings_VOC]));
+      }
 
       this.humidityService
         .setCharacteristic(Characteristic.CurrentRelativeHumidity, roundInt(valuest[airthings_humidity]));
@@ -74,9 +98,17 @@ class AirthingsPlugin {
         .setCharacteristic(CustomCharacteristic.RadonLevelShortTermAverage, roundInt(valuest[airthings_radon_st]));
       this.temperatureService
         .setCharacteristic(CustomCharacteristic.RadonLevelLongTermAverage, roundInt(valuest[airthings_radon_lt]));
+      if(this.waveplus) {
+        this.humidityService
+          .setCharacteristic(CustomCharacteristic.Pressure, roundInt(valuest[airthings_pressure]));
+        this.carbonDioxideSensorService
+          .setCharacteristic(Characteristic.CarbonDioxideLevel, valuest[airthings_CO2]));
+        this.carbonDioxideSensorService
+          .setCharacteristic(CustomCharacteristic.VOCLevel, roundInt(valuest[airthings_VOC]));
+      }
     });
   }
-
+  // Need to have CO2 and VOC level under temperature or humidity
   getServices() {
     return [this.informationService, this.temperatureService, this.humidityService]
   }
