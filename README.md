@@ -13,7 +13,9 @@ communicates directly with the the Wave/Wave Plus without the need of a hub.  Re
   
 Note that radon, pressure and VOC can only be viewed using the Eve app (and others) but not in the Home app.
 However, these values can be accessed using Automation shortcuts in the Home app so they can be automatically
-logged to a database if needed (shows up as 'Custom' variable).
+logged to a database if needed (they all show up as 'Custom' variable).
+
+![image](https://github.com/HSkul/homebridge-airthings-wave/assets/32560714/35a1de08-f075-4e8a-8bd1-48c7cde181f0)
 
 # Build Instructions
 
@@ -24,7 +26,7 @@ Make sure you are using a bluetooth capable Raspberry Pi and that it is located 
 1.	Install Homebridge using `npm install -g homebridge`
 2.	Install this plugin ` npm install -g --unsafe-perm https://github.com/HSkul/homebridge-airthings-wave`
 3.  Download wave_read.py and/or waveplus_read.py Python scripts and place them in /home/pi or another location of your choice (indicated in config.json).
-4.  Download find_wave.py Python script and place it in /home/pi
+4.  Download find_wave.py Python script and place it in /home/pi (or other location of your choice)
 5.	Update your configuration file - see below for an example
 
 Use 'python find_wave.py SN' to find the bluetooth address of your Airthings Wave radon sensor, where SN is the serial number of your radon sensor (found on the back of it).  If you have multiple Wave/Wave Plus sensors it will actually list bluetooth addresses of them all even if you just run it with one of serial numbers.  Note that you may need to turn bluetooth off on your phone so the Waves are broadcasting (and this is the reason why I have the python scripts take the bluetooth address and not the serial number as I want my phone to still talk to the Wave/Wave Plus).
