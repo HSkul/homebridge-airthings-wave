@@ -1,6 +1,7 @@
+# Python script from Airthings
+# Usage: python waveplus_read.py BTAddress
+# Output Humidity Temperature Radon_shortterm Radon_longterm
 
-# Usage: wave_read.py BTaddress
-# Output Humidity Temperature Radon_shortterm Radon_shortterm
 # ===============================
 # Module import dependencies
 # ===============================
@@ -21,7 +22,6 @@ BTAddress = sys.argv[1]
 # ===================================
 # Sensor index definitions
 # ===================================
-# We are not using the date/time from the python script
 
 SENSOR_IDX_DATETIME      = 0
 SENSOR_IDX_HUMIDITY      = 1
@@ -107,8 +107,6 @@ try:
 
     print humidity, temperature, radon_st_avg, radon_lt_avg, "done"
     sys.stdout.flush()
-#    print data
-     #   time.sleep(SamplePeriod)
 
 finally:
     wave.disconnect()
