@@ -1,22 +1,23 @@
- {
-            "accessory": "Airthings",
-            "name": "MyWave",
-            "waveplus": false,
-            "name_temperature": "Temperature",
-            "name_humidity": "Humidity",
-            "refresh": 3600,
-            "address": "AA:BB:BB:CC:DD:EE",
-            "path": "/home/pi/wave_read.py"
-        },
-        {
-            "accessory": "Airthings",
-            "name": "MyWavePlus",
-            "waveplus": true,
-            "name_temperature": "Temperature",
-            "name_humidity": "Humidity",
-            "name_CO2": "Carbon Dioxide",
-            "refresh": 900,
-            "address": "AA:BB:BB:CC:DD:EE",
-            "path": "/home/pi/waveplus_read.py"
-        }
-    ]
+"accessories": [
+    {
+        "accessory": "Airthings",
+        "name": "MyWave",
+        "waveplus": false,
+        "name_temperature": "Temperature",
+        "name_humidity": "Humidity",
+        "refresh": 3600,
+        "address": "AA:BB:BB:CC:DD:EE",
+        "path": "/home/pi/wave_read.py"
+    },
+    {
+        "accessory": "Airthings",
+        "name": "MyWavePlus",
+        "waveplus": true,
+        "name_temperature": "Temperature",
+        "name_humidity": "Humidity",
+        "name_CO2": "Carbon Dioxide",
+        "refresh": 900,
+        "address": "AA:BB:BB:CC:DD:EE",
+        "path": "/home/pi/waveplus_read.py"
+    }
+]
