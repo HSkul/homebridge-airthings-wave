@@ -60,8 +60,8 @@ class AirthingsPlugin {
       .addCharacteristic(CustomCharacteristic.RadonLevelLongTermAverage);
     if(this.waveplus) {
       this.name_CO2 = config.name_CO2 || this.name;
-      this.carbonDioxideSensorService = new Service.CarbonDioxideSensor(this.name_CO2);
-      this.carbonDioxideSensorService
+      this.carbonDioxideService = new Service.CarbonDioxideSensor(this.name_CO2);
+      this.carbonDioxideService
         .addCharacteristic(CustomCharacteristic.VOClevel);
       this.humidityService
         .addCharacteristic(CustomCharacteristic.Pressure);
@@ -101,16 +101,19 @@ class AirthingsPlugin {
       if(this.waveplus) {
         this.humidityService
           .setCharacteristic(CustomCharacteristic.Pressure, roundInt(valuest[airthings_pressure]));
-        this.carbonDioxideSensorService
+        this.carbonDioxideService
           .setCharacteristic(Characteristic.CarbonDioxideLevel, valuest[airthings_CO2]));
-        this.carbonDioxideSensorService
+        this.carbonDioxideService
           .setCharacteristic(CustomCharacteristic.VOCLevel, roundInt(valuest[airthings_VOC]));
       }
     });
   }
   // Need to have CO2 and VOC level under temperature or humidity
   getServices() {
-    return [this.informationService, this.temperatureService, this.humidityService]
+    if(this.waveplus)
+      return [this.informationService, this.temperatureService, this.humidityService, this.carbonDioxideService]
+    else
+      return [this.informationService, this.temperatureService, this.humidityService]
   }
 }
 
