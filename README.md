@@ -34,9 +34,10 @@ Example configuration:
     "accessories": [
         {
             "accessory": "Airthings",
-            "name": "Sensor",
+            "name": "Airthings",
             "name_temperature": "Temperature",
             "name_humidity": "Humidity",
+            "name_VOC": "Volatile Organics",
             "address": "AA:BB:CC:DD:11:22",
             "refresh": 900,
             "path": "/var/lib/homebridge/quary_wave.py"
