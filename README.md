@@ -10,13 +10,10 @@ communicates directly with the the Wave/Wave Plus without the need of a hub.  Re
 * Atmospheric pressure (Wave Plus only)
 * Carbon dioxide level (Wave Plus only)
 * Volatile organic compounds level (Wave Plus only)
+  
 Note that radon, pressure and VOC can only be viewed using the Eve app (and others) but not in the Home app.
 However, these values can be accessed using Automation shortcuts in the Home app so they can be automatically
 logged to a database if needed (shows up as 'Custom' variable).
-
-* Display of temperature, humidity and radon (short- and long-term average) from Airthings Wave via Raspberry Pi
-* Only temperature and humidity can be viewed in the Home app, radon levels can be viewed using Eve app (and others)
-Wave Plus:
 
 # Build Instructions
 
@@ -48,18 +45,28 @@ Example configuration:
 
 ```json
     "accessories": [
-        {
-            "accessory": "Airthings",
-            "name": "Airthings",
-            "waveplus": false,
-            "name_temperature": "Temperature",
-            "name_humidity": "Humidity",
-            "name_VOC": "Volatile Organics",
-            "address": "AA:BB:CC:DD:11:22",
-            "refresh": 900,
-            "path": "/var/lib/homebridge/quary_wave.py"
-        }
-    ]
+    {
+        "accessory": "Airthings",
+        "name": "MyWave",
+        "waveplus": false,
+        "name_temperature": "Temperature",
+        "name_humidity": "Humidity",
+        "refresh": 3600,
+        "address": "AA:BB:BB:CC:DD:EE",
+        "path": "/home/pi/wave_read.py"
+    },
+    {
+        "accessory": "Airthings",
+        "name": "MyWavePlus",
+        "waveplus": true,
+        "name_temperature": "Temperature",
+        "name_humidity": "Humidity",
+        "name_CO2": "Carbon Dioxide",
+        "refresh": 900,
+        "address": "AA:BB:BB:CC:DD:EE",
+        "path": "/home/pi/waveplus_read.py"
+    }
+]
 ```
 
 ## See also
