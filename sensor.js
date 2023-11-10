@@ -102,7 +102,7 @@ class AirthingsPlugin {
         this.humidityService
           .setCharacteristic(CustomCharacteristic.Pressure, roundInt(valuest[airthings_pressure]));
         this.carbonDioxideService
-          .setCharacteristic(Characteristic.CarbonDioxideLevel, valuest[airthings_CO2]));
+          .setCharacteristic(Characteristic.CarbonDioxideLevel, roundInt(valuest[airthings_CO2]));
         this.carbonDioxideService
           .setCharacteristic(CustomCharacteristic.VOCLevel, roundInt(valuest[airthings_VOC]));
       }
