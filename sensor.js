@@ -72,7 +72,7 @@ class AirthingsPlugin {
         });
 
       this.carbonDioxideService
-        .addCharacteristic(CustomCharacteristic.VOClevel);
+        .addCharacteristic(CustomCharacteristic.VOCLevel);
       this.humidityService
         .addCharacteristic(CustomCharacteristic.Pressure);
     }
