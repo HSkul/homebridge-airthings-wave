@@ -44,14 +44,16 @@ class AirthingsPlugin {
       .getCharacteristic(Characteristic.CurrentHumidity)
       .setProps({
         minValue: 0,
-        maxValue: 100
+        maxValue: 100,
+        minStep: 0.1
       });
     this.temperatureService = new Service.TemperatureSensor(this.name_temperature);
     this.temperatureService
       .getCharacteristic(Characteristic.CurrentTemperature)
       .setProps({
         minValue: -100,
-        maxValue: 100
+        maxValue: 100,
+        minStep: 0.1
       });
 
     this.temperatureService
@@ -61,6 +63,14 @@ class AirthingsPlugin {
     if(this.waveplus) {
       this.name_CO2 = config.name_CO2 || this.name;
       this.carbonDioxideService = new Service.CarbonDioxideSensor(this.name_CO2);
+      this.carbonDioxideService
+        .getCharacteristic(Characteristic.CarbonDioxideLevel)
+        .setProps({
+          minValue: 0,
+          maxValue: 5000,
+          minStep: 1
+        });
+
       this.carbonDioxideService
         .addCharacteristic(CustomCharacteristic.VOClevel);
       this.humidityService
@@ -108,7 +118,6 @@ class AirthingsPlugin {
       }
     });
   }
-  // Need to have CO2 and VOC level under temperature or humidity
   getServices() {
     if(this.waveplus)
       return [this.informationService, this.temperatureService, this.humidityService, this.carbonDioxideService]
