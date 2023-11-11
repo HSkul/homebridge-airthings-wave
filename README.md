@@ -15,7 +15,7 @@ Note that radon, pressure and VOC can only be viewed using the Eve app (and othe
 However, these values can be accessed using Automation shortcuts in the Home app so they can be automatically
 logged to a database if needed (they all show up as 'Custom' variable).
 
-![image](https://github.com/HSkul/homebridge-airthings-wave/assets/32560714/35a1de08-f075-4e8a-8bd1-48c7cde181f0)
+![image](https://github.com/HSkul/homebridge-airthings-wave/assets/32560714/f662b831-d686-4594-afa8-d3030caad789)
 
 # Build Instructions
 
