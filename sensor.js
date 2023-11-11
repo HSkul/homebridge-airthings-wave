@@ -5,7 +5,7 @@ const airthings_temperature = 1;
 const airthings_radon_st = 2;
 const airthings_radon_lt = 3;
 const airthings_pressure = 4;
-const airtings_CO2 = 5;
+const airthings_CO2 = 5;
 const airthings_VOC = 6;
 
 let Service, Characteristic;
