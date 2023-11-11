@@ -40,21 +40,21 @@ class AirthingsPlugin {
 
     
     this.humidityService = new Service.HumiditySensor(this.name_humidity);
-    this.humidityService
+/*    this.humidityService
       .getCharacteristic(Characteristic.CurrentHumidity)
       .setProps({
         minValue: 0,
         maxValue: 100,
         minStep: 0.1
-      });
+      });*/
     this.temperatureService = new Service.TemperatureSensor(this.name_temperature);
-    this.temperatureService
+/*    this.temperatureService
       .getCharacteristic(Characteristic.CurrentTemperature)
       .setProps({
         minValue: -100,
         maxValue: 100,
         minStep: 0.1
-      });
+      });*/
 
     this.temperatureService
       .addCharacteristic(CustomCharacteristic.RadonLevelShortTermAverage);
